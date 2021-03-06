@@ -1,3 +1,4 @@
+import _ from "lodash"
 import React from "react"
 import {
   boomshakRegular,
@@ -16,7 +17,10 @@ function Render({
 }) {
   return React.createElement(
     name,
-    props,
+    _.mapKeys(
+      props,
+      (_1, key) => _.camelCase(key)
+    ),
     children.map(
       (child, i) => React.createElement(
         Render,
