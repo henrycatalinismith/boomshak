@@ -1,5 +1,5 @@
 import React from "react"
-import { boomshakRegular, BoomshakRegularOptions } from "./boomshakRegular"
+import { boomshakRegular, BoomshakRegularOptions } from "./regular"
 
 export interface BoomshakRegularProps {
   children: string,
