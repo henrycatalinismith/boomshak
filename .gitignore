@@ -4,3 +4,4 @@ node_modules
 yarn-error.log
 *.js
 *.d.ts
+_site
