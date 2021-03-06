@@ -1,7 +1,7 @@
 {
   "name": "@hendotcat/boomshak",
   "description": "Vector font",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "license": "CC0-1.0",
   "author": {
     "name": "Henry Catalini Smith",
@@ -26,5 +26,13 @@
     "react-dom": "^17.0.1",
     "ts-loader": "^8.0.17",
     "typescript": "^4.2.3"
-  }
+  },
+  "files": [
+    "BoomshakRegular.component.d.ts",
+    "BoomshakRegular.component.js",
+    "glyphs.d.ts",
+    "glyphs.js",
+    "regular.d.ts",
+    "regular.js"
+  ]
 }
