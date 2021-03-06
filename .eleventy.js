@@ -20,15 +20,17 @@ function render({
 }
 
 module.exports = function(eleventyConfig) {
-  console.log("building")
   eleventyConfig.addFilter(
     "boomshakRegular",
-    function(text) {
+    function(text, fontSize = 32) {
+      const options = {
+        fontSize,
+      }
       const [
         name,
         props,
         children,
-      ] = boomshakRegular(text)
+      ] = boomshakRegular(text, options)
       const html = render({
         name,
         props,

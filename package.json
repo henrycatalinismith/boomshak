@@ -1,7 +1,7 @@
 {
   "name": "@hendotcat/boomshak",
   "description": "Vector font",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "license": "CC0-1.0",
   "author": {
     "name": "Henry Catalini Smith",
@@ -12,7 +12,9 @@
     "type": "git",
     "url": "https://github.com/hendotcat/boomshak.git"
   },
-  "dependencies": {},
+  "dependencies": {
+    "lodash": "^4.17.21"
+  },
   "scripts": {
     "build": "tsc",
     "start": "start-storybook -p 6006"

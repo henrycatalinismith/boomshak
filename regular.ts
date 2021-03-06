@@ -82,7 +82,7 @@ export function boomshakRegular(
               d: d(stroke, layer),
               fill: "none",
               stroke: layer.color,
-              strokeWidth: layer.width,
+              "stroke-width": layer.width,
             },
             [],
           ]
