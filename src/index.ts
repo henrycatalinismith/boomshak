@@ -1,6 +1,3 @@
-import { Glyphs } from "./glyphs"
-
-export {
-  Glyphs,
-}
+export * from "./boomshakRegular"
+export * from "./BoomshakRegular"
 

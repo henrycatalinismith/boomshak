@@ -1,10 +1,14 @@
 import React from "react"
+import { storiesOf } from "@storybook/react"
+import { BoomshakRegular } from "../src"
 
-export default {
-  title: "boomshak",
-}
+const stories = storiesOf("<BoomshakRegular />", module)
 
-export const boomshak = () => (
-  <p>boomshak</p>
-)
+;[64, 32, 16].forEach(fontSize => {
+  stories.add(`boomshak [${fontSize}]`, () => (
+    <BoomshakRegular fontSize={fontSize}>
+      boomshak
+    </BoomshakRegular>
+  ))
+})
 
