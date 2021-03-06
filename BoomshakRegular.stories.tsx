@@ -1,6 +1,6 @@
 import React from "react"
 import { storiesOf } from "@storybook/react"
-import { BoomshakRegular } from "../src"
+import { BoomshakRegular } from "./BoomshakRegular.component"
 
 const stories = storiesOf("<BoomshakRegular />", module)
 

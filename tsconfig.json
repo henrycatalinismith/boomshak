@@ -9,9 +9,13 @@
     "moduleResolution": "node",
     "module": "commonjs",
     "noImplicitUseStrict": true,
-    "outDir": "dist",
+    "outDir": ".",
     "skipLibCheck": true
   },
   "exclude": ["node_modules", "dist"],
-  "include": ["./src/index.ts"]
+  "include": [
+    "./BoomshakRegular.component.ts",
+    "./glyphs.ts",
+    "./regular.ts"
+  ]
 }
