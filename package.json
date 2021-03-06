@@ -1,0 +1,19 @@
+{
+  "name": "@hendotcat/boomshak",
+  "description": "Vector font",
+  "license": "CC0-1.0",
+  "author": {
+    "name": "Henry Catalini Smith",
+    "email": "hen@hey.com",
+    "url": "https://hen.cat/"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/hendotcat/boomshak.git"
+  },
+  "dependencies": {},
+  "scripts": {},
+  "devDependencies": {
+    "typescript": "^4.2.3"
+  }
+}
