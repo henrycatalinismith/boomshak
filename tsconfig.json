@@ -14,7 +14,7 @@
   },
   "exclude": ["node_modules", "dist"],
   "include": [
-    "./BoomshakRegular.component.ts",
+    "./BoomshakRegular.component.tsx",
     "./glyphs.ts",
     "./regular.ts"
   ]
