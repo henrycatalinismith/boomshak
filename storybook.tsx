@@ -5,13 +5,17 @@ import {
   camelProps,
   compile,
   BoomshakOptions,
+  RegularBackgroundLayer,
+  RegularForegroundLayer,
 } from "./boomshak"
 
 function Boomshak({
   text,
+  layers = undefined,
   lineHeight = 16,
 }): React.ReactElement {
   const options: BoomshakOptions = {
+    layers,
     lineHeight,
   }
   const element = boomshak(
@@ -44,4 +48,20 @@ const stories = storiesOf("boomshak", module)
   ))
 })
 
-;
+stories.add(`custom layer`, () => (
+  <Boomshak
+    text="custom"
+    layers={[
+      {
+        ...RegularBackgroundLayer,
+        strokeWidth: 1,
+      },
+      {
+        ...RegularForegroundLayer,
+        strokeWidth: 0.6,
+      },
+    ]}
+    lineHeight={64}
+  />
+))
+
