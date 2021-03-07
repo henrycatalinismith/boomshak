@@ -37,12 +37,16 @@ export type Typeface = {
   [k in CharacterRange]: Glyph
 }
 
-export interface BoomshakOptions {
-  lineHeight?: number,
+export interface Layer {
+  scale: number
+  fill: string,
+  stroke: string
+  strokeWidth: number,
 }
 
-const defaults: BoomshakOptions = {
-  lineHeight: 16,
+export interface BoomshakOptions {
+  layers?: Layer[]
+  lineHeight?: number
 }
 
 export type ElementName =
@@ -60,44 +64,57 @@ export type Element = [
   ElementChildren,
 ]
 
+export const RegularBackgroundLayer: Layer = {
+  scale: 0.5,
+  fill: "none",
+  stroke: "#000000",
+  strokeWidth: 1.4,
+}
+
+export const RegularForegroundLayer: Layer = {
+  scale: 0.5,
+  fill: "none",
+  stroke: "#ffffff",
+  strokeWidth: 0.5,
+}
+
+export const RegularLayers = [
+  RegularBackgroundLayer,
+  RegularForegroundLayer,
+]
+
+const defaults: BoomshakOptions = {
+  layers: RegularLayers,
+  lineHeight: 16,
+}
+
 const fg = "#ffffff"
 const bg = "#000000"
 
 function renderGlyph(
   glyph: Glyph,
   x: number,
+  layers: Layer[],
 ): Element {
   const xScale = 4.8
 
-  const background = glyph.map(
-    stroke => renderStroke(
-      stroke,
-      x * xScale,
-      2,
-      0.5,
-      bg,
-      1.4,
+  const children = layers.map(layer => {
+    return glyph.map(
+      stroke => renderStroke(
+        stroke,
+        x * xScale,
+        2,
+        layer.scale,
+        layer.stroke,
+        layer.strokeWidth,
+      )
     )
-  )
-
-  const foreground = glyph.map(
-    stroke => renderStroke(
-      stroke,
-      x * xScale,
-      2,
-      0.5,
-      fg,
-      0.5,
-    )
-  )
+  }).flat()
 
   return [
     "g",
     {},
-    [
-      ...background,
-      ...foreground,
-    ],
+    children,
   ]
 }
 
@@ -122,7 +139,10 @@ export function renderStroke(
 
 export function boomshak(
   text: string,
-  options = defaults,
+  {
+    layers = defaults.layers,
+    lineHeight = defaults.lineHeight,
+  }
 ): any {
   const lines = text.split(/\n/)
   const xm = 2.6
@@ -159,16 +179,22 @@ export function boomshak(
       glyphs.push(renderGlyph(
         Glyphs[char],
         x,
+        layers,
       ))
     })
   })
+
+  const height = lineHeight
+  const width = (lineHeight / 4)
+    * xm
+    * lines[0].length
 
   const props: ElementProps = {}
   props["viewBox"] = viewBox
   props["stroke-linecap"] = "round"
   props["stroke-linejoin"] = "round"
-  props["height"] = `${options.lineHeight}px`
-  props["width"] = `${(options.lineHeight / 4) * xm * lines[0].length}px`
+  props["height"] = `${height}px`
+  props["width"] = `${width}px`
 
   const svg = [
     "svg",
@@ -209,15 +235,18 @@ export function compile(
   fn: (Element, number) => any,
   i = 0,
 ): any {
-  const [name, props, children] = element
-  if (children.length > 0) {
-    return fn([
-      name,
-      props,
-      children.map((c,j) => compile(c, fn, j)),
-    ], i)
-  }
-  return fn(element, i)
+  const [
+    name,
+    props,
+    children,
+  ] = element
+  return fn([
+    name,
+    props,
+    children.map(
+      (c,j) => compile(c, fn, j)
+    ),
+  ], i)
 }
 
 export const Glyphs: Typeface = {
