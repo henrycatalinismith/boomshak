@@ -37,6 +37,13 @@ export type Typeface = {
   [k in CharacterRange]: Glyph
 }
 
+export type ViewBox = [
+  number,
+  number,
+  number,
+  number,
+]
+
 export interface Layer {
   scale: number
   fill: string,
@@ -47,6 +54,7 @@ export interface Layer {
 export interface BoomshakOptions {
   layers?: Layer[]
   lineHeight?: number
+  viewBoxFn?: (string) => ViewBox
 }
 
 export type ElementName =
@@ -86,10 +94,30 @@ export const RegularLayers = [
 const defaults: BoomshakOptions = {
   layers: RegularLayers,
   lineHeight: 16,
+  viewBoxFn: calculateViewBox,
 }
 
-const fg = "#ffffff"
-const bg = "#000000"
+function calculateViewBox(text: string): ViewBox {
+  const xm = 2.6
+  const lines = text.split(/\n/)
+
+  let x = -0.5
+  switch (lines[0][0]) {
+    case "w": x = -0.23; break
+    case "<": x = -0.33; break
+  }
+  const y = 0
+  const w = xm * lines[0].length - 1
+  const h = 4 * lines.length
+
+  const viewBox: ViewBox = [
+    x,
+    y,
+    w,
+    h,
+  ]
+  return viewBox
+}
 
 function renderGlyph(
   glyph: Glyph,
@@ -142,35 +170,13 @@ export function boomshak(
   {
     layers = defaults.layers,
     lineHeight = defaults.lineHeight,
+    viewBoxFn = defaults.viewBoxFn,
   }
 ): any {
   const lines = text.split(/\n/)
   const xm = 2.6
 
-  const first = (() => {
-    switch (lines[0][0]) {
-      case "w":
-        return -0.23
-      case "<":
-        return -0.33
-      default:
-        return -0.5
-    }
-  })()
-
-  const last = (() => {
-    if (text === "<") {
-      return 0.33
-    }
-    return 0
-  })()
-
-  const viewBox = [
-    first,
-    0,
-    xm * lines[0].length - 1 + last,
-    4 * lines.length,
-  ].join(" ")
+  const viewBox = viewBoxFn(text).join(" ")
 
   const glyphs: any[] = []
   lines.forEach((line, y) => {
