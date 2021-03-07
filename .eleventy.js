@@ -14,11 +14,11 @@ module.exports = function(eleventyConfig) {
       )
       const svg = compile(
         element,
-        ([name, attributes, html]) => {
+        ([name, props, children]) => {
           return createHtmlElement({
             name,
-            attributes,
-            html,
+            attributes: props,
+            html: children.join(""),
           })
         }
       )

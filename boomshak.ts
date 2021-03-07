@@ -101,13 +101,13 @@ function renderGlyph(
   ]
 }
 
-function renderStroke(
+export function renderStroke(
   points: Stroke,
-  x: number,
-  y: number,
-  scale: number,
-  color: string,
-  width: number,
+  x = 0,
+  y = 0,
+  scale = 1,
+  color = "#000000",
+  width = 1,
 ): Element {
   const props: ElementProps = {}
   props["d"] = `M${points.map((p) => [
