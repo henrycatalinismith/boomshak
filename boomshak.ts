@@ -37,6 +37,189 @@ export type Typeface = {
   [k in CharacterRange]: Glyph
 }
 
+export interface BoomshakRegularOptions {
+  fontSize?: number,
+}
+
+const defaults: BoomshakRegularOptions = {
+  fontSize: 16,
+}
+
+export type ElementName =
+  "svg" | "g" | "path"
+
+export interface ElementProps {
+  [x: string]: number | string
+}
+
+export type ElementChildren = Element[]
+
+export type Element = [
+  ElementName,
+  ElementProps,
+  ElementChildren,
+]
+
+const fg = "#ffffff"
+const bg = "#000000"
+
+function renderGlyph(
+  glyph: Glyph,
+  x: number,
+): Element {
+  const xScale = 4.8
+
+  const background = glyph.map(
+    stroke => renderStroke(
+      stroke,
+      x * xScale,
+      2,
+      0.5,
+      bg,
+      1.4,
+    )
+  )
+
+  const foreground = glyph.map(
+    stroke => renderStroke(
+      stroke,
+      x * xScale,
+      2,
+      0.5,
+      fg,
+      0.5,
+    )
+  )
+
+  return [
+    "g",
+    {},
+    [
+      ...background,
+      ...foreground,
+    ],
+  ]
+}
+
+function renderStroke(
+  points: Stroke,
+  x: number,
+  y: number,
+  scale: number,
+  color: string,
+  width: number,
+): Element {
+  const props: ElementProps = {}
+  props["d"] = `M${points.map((p) => [
+    scale * (p[0] + x),
+    scale * (p[1] + y),
+  ]).join(" L")}`
+  props["fill"] = "none"
+  props["stroke"] = color
+  props["stroke-width"] = width
+  return ["path", props, []]
+}
+
+export function boomshakRegular(
+  text: string,
+  options = defaults,
+): any {
+  const lines = text.split(/\n/)
+  const xm = 2.6
+
+  const first = (() => {
+    switch (lines[0][0]) {
+      case "w":
+        return -0.23
+      case "<":
+        return -0.33
+      default:
+        return -0.5
+    }
+  })()
+
+  const last = (() => {
+    if (text === "<") {
+      return 0.33
+    }
+    return 0
+  })()
+
+  const viewBox = [
+    first,
+    0,
+    xm * lines[0].length - 1 + last,
+    4 * lines.length,
+  ].join(" ")
+
+  const glyphs: any[] = []
+  lines.forEach((line, y) => {
+    const chars = line.split("")
+    chars.forEach((char, x) => {
+      glyphs.push(renderGlyph(
+        Glyphs[char],
+        x,
+      ))
+    })
+  })
+
+  const props: ElementProps = {}
+  props["viewBox"] = viewBox
+  props["stroke-linecap"] = "round"
+  props["stroke-linejoin"] = "round"
+  props["height"] = `${options.fontSize}px`
+  props["width"] = `${(options.fontSize / 4) * xm * lines[0].length}px`
+
+  const svg = [
+    "svg",
+    props,
+    glyphs,
+  ]
+
+  return svg
+}
+
+function camelCase(string: string): string {
+  return string
+    .match(/[^\x00-\x2f\x3a-\x40\x5b-\x60\x7b-\x7f]+/g)
+    .reduce((result, word, index) => {
+      return result + (
+        index
+        ? word.replace(
+          /^([a-z])/,
+          c => c.toUpperCase()
+        ) : word
+      )
+    }, "")
+}
+
+export function camelProps(
+  props: ElementProps
+): ElementProps {
+  return Object
+    .entries(props)
+    .map(([k, v]) => [camelCase(k), v])
+    .reduce((o, [k, v]) => Object.assign(
+      o, { [k]: v }
+    ), {})
+}
+
+export function compile(
+  element: Element,
+  fn: (Element, number) => any,
+  i = 0,
+): any {
+  const [name, props, children] = element
+  if (children.length > 0) {
+    return fn([
+      name,
+      props,
+      children.map((c,j) => compile(c, fn, j)),
+    ], i)
+  }
+  return fn(element, i)
+}
+
 export const Glyphs: Typeface = {
   "0": [
     [
