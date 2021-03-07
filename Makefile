@@ -1,7 +1,7 @@
 _site: boomshak.js
 	yarn eleventy
 
-all: boomshak.js boomshak.d.ts _site
+all: test boomshak.js boomshak.d.ts _site
 
 boomshak.d.ts: node_modules
 	yarn tsc --emitDeclarationOnly true
@@ -21,4 +21,7 @@ distclean: clean
 node_modules:
 	yarn --pure-lockfile
 
-.PHONY: all clean distclean
+test: node_modules
+	yarn jest
+
+.PHONY: all clean distclean test
