@@ -37,12 +37,12 @@ export type Typeface = {
   [k in CharacterRange]: Glyph
 }
 
-export interface BoomshakRegularOptions {
-  fontSize?: number,
+export interface BoomshakOptions {
+  lineHeight?: number,
 }
 
-const defaults: BoomshakRegularOptions = {
-  fontSize: 16,
+const defaults: BoomshakOptions = {
+  lineHeight: 16,
 }
 
 export type ElementName =
@@ -120,7 +120,7 @@ export function renderStroke(
   return ["path", props, []]
 }
 
-export function boomshakRegular(
+export function boomshak(
   text: string,
   options = defaults,
 ): any {
@@ -167,8 +167,8 @@ export function boomshakRegular(
   props["viewBox"] = viewBox
   props["stroke-linecap"] = "round"
   props["stroke-linejoin"] = "round"
-  props["height"] = `${options.fontSize}px`
-  props["width"] = `${(options.fontSize / 4) * xm * lines[0].length}px`
+  props["height"] = `${options.lineHeight}px`
+  props["width"] = `${(options.lineHeight / 4) * xm * lines[0].length}px`
 
   const svg = [
     "svg",

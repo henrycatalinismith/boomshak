@@ -1,20 +1,20 @@
 import React from "react"
 import { storiesOf } from "@storybook/react"
 import {
-  boomshakRegular,
+  boomshak,
   camelProps,
   compile,
-  BoomshakRegularOptions,
+  BoomshakOptions,
 } from "./boomshak"
 
-function BoomshakRegular({
+function Boomshak({
   text,
-  fontSize = 16,
+  lineHeight = 16,
 }): React.ReactElement {
-  const options: BoomshakRegularOptions = {
-    fontSize,
+  const options: BoomshakOptions = {
+    lineHeight,
   }
-  const element = boomshakRegular(
+  const element = boomshak(
     text,
     options,
   )
@@ -35,12 +35,13 @@ function BoomshakRegular({
 
 const stories = storiesOf("boomshak", module)
 
-;[64, 32, 16].forEach(fontSize => {
-  stories.add(`regular [${fontSize}]`, () => (
-    <BoomshakRegular
+;[64, 32, 16].forEach(lineHeight => {
+  stories.add(`boomshak [${lineHeight}]`, () => (
+    <Boomshak
       text="boomshak"
-      fontSize={fontSize}
+      lineHeight={lineHeight}
     />
   ))
 })
 
+;

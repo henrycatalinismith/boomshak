@@ -1,14 +1,14 @@
 const createHtmlElement = require("create-html-element")
-const { boomshakRegular, compile } = require("./boomshak")
+const { boomshak, compile } = require("./boomshak")
 
 module.exports = function(eleventyConfig) {
   eleventyConfig.addFilter(
-    "boomshakRegular",
-    function(text, fontSize = 32) {
+    "boomshak",
+    function(text, lineHeight = 32) {
       const options = {
-        fontSize,
+        lineHeight,
       }
-      const element = boomshakRegular(
+      const element = boomshak(
         text,
         options,
       )
