@@ -1,4 +1,4 @@
-import { Glyphs } from "./glyphs"
+import { Glyph, Glyphs, Stroke } from "./glyphs"
 
 export interface BoomshakRegularOptions {
   fontSize?: number,
@@ -8,8 +8,70 @@ const defaults: BoomshakRegularOptions = {
   fontSize: 16,
 }
 
+export interface Props {
+  [x: string]: number | string
+}
+
+export type Element = [
+  string,
+  Props,
+  Element[],
+]
+
 const fg = "#ffffff"
 const bg = "#000000"
+
+function renderGlyph(
+  glyph: Glyph,
+  x: number,
+): Element {
+  const xScale = 4.8
+  return [
+    "g",
+    {},
+    [
+      ...glyph.map(stroke => renderStroke(
+        stroke,
+        x * xScale,
+        2,
+        0.5,
+        bg,
+        1.4,
+      )),
+      ...glyph.map(stroke => renderStroke(
+        stroke,
+        x * xScale,
+        2,
+        0.5,
+        fg,
+        0.5,
+      )),
+    ],
+  ]
+}
+
+function renderStroke(
+  points: Stroke,
+  x: number,
+  y: number,
+  scale: number,
+  color: string,
+  width: number,
+): Element {
+  return [
+    "path",
+    {
+      d: `M${points.map((p) => [
+          scale * (p[0] + x),
+          scale * (p[1] + y),
+        ]).join(" L")}`,
+      fill: "none",
+      stroke: color,
+      "stroke-width": width,
+    },
+    [],
+  ]
+}
 
 export function boomshakRegular(
   text: string,
@@ -43,63 +105,14 @@ export function boomshakRegular(
     4 * lines.length,
   ].join(" ")
 
-  const glyphs = []
+  const glyphs: any[] = []
   lines.forEach((line, y) => {
     const chars = line.split("")
     chars.forEach((char, x) => {
-      const xScale = 4.8
-
-      const layers = [
-        {
-          scale: 0.5,
-          color: bg,
-          x: x * xScale,
-          y: 2,
-          width: 1.4,
-        },
-        {
-          scale: 0.5,
-          color: fg,
-          x: x * xScale,
-          y: 2,
-          width: 0.5,
-        },
-      ].map((layer, i) => {
-
-        const d = (points, layer) =>
-          `M${points
-            .map((p) => [
-              layer.scale * (p[0] + layer.x),
-              layer.scale * (p[1] + layer.y),
-            ])
-            .join(" L")}`
-        const strokes = Glyphs[char] || []
-
-        const paths = strokes.map((stroke, j) => {
-          return [
-            "path",
-            {
-              d: d(stroke, layer),
-              fill: "none",
-              stroke: layer.color,
-              "stroke-width": layer.width,
-            },
-            [],
-          ]
-        })
-
-        return [
-          "g",
-          {},
-          paths,
-        ]
-      })
-
-      glyphs.push([
-        "g",
-        {},
-        layers,
-      ])
+      glyphs.push(renderGlyph(
+        Glyphs[char],
+        x,
+      ))
     })
   })
 
