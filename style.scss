@@ -1,0 +1,43 @@
+:root {
+  --padding: 0.5rem;
+  --tiny: calc(100vw - var(--padding) * 2);
+  --wide: 32rem;
+  --box: min(var(--tiny), var(--wide));
+  --edge: calc((100vw - var(--box)) / 2);
+}
+
+@media (min-width: 16rem) {
+  :root {
+    --padding: 1rem
+  }
+}
+
+html {
+  box-sizing: border-box;
+}
+
+*,
+*:before,
+*:after {
+  box-sizing: inherit;
+}
+
+body {
+  background: white;
+  font-family: sans-serif;
+  margin: 0;
+}
+
+main {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+}
+
+header {
+  width: var(--box);
+}
+
+svg {
+  width: var(--box);
+}

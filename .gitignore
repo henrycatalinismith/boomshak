@@ -1,7 +1,7 @@
 .DS_Store
-dist
+_includes
+_site
+boomshak.js
+boomshak.d.ts
 node_modules
 yarn-error.log
-*.js
-*.d.ts
-_site
