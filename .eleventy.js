@@ -12,8 +12,20 @@ function monkeypatch(cls, fn) {
   cls.prototype[fn.name] = wrapped
 }
 
-module.exports = function(eleventyConfig) {
+function compileBoomshak(options) {
+  return compile(
+    boomshak(options),
+    ([name, props, children]) => {
+      return createHtmlElement({
+        name,
+        attributes: props,
+        html: children.join(""),
+      })
+    }
+  )
+}
 
+module.exports = function(eleventyConfig) {
   eleventyConfig.addWatchTarget("style.scss")
 
   eleventyConfig.addFilter(
@@ -64,4 +76,20 @@ module.exports = function(eleventyConfig) {
       return css
     }
   )
+
+  eleventyConfig.addShortcode(
+    "header",
+    function() {
+      return compileBoomshak({
+        text: "boomshak",
+        viewBoxFn: () => [
+          -14,
+          -26,
+          64,
+          64,
+        ],
+      })
+    }
+  )
+
 }
