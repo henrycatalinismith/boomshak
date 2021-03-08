@@ -5,13 +5,10 @@ module.exports = function(eleventyConfig) {
   eleventyConfig.addFilter(
     "boomshak",
     function(text, lineHeight = 32) {
-      const options = {
-        lineHeight,
-      }
-      const element = boomshak(
+      const element = boomshak({
         text,
-        options,
-      )
+        lineHeight,
+      })
       const svg = compile(
         element,
         ([name, props, children]) => {

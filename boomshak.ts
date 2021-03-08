@@ -44,15 +44,9 @@ export type ViewBox = [
   number,
 ]
 
-export interface Layer {
-  scale: number
-  fill: string,
-  stroke: string
-  strokeWidth: number,
-}
-
 export interface BoomshakOptions {
-  layers?: Layer[]
+  text: string
+  layers?: ElementProps[]
   lineHeight?: number
   viewBoxFn?: (string) => ViewBox
 }
@@ -72,43 +66,41 @@ export type Element = [
   ElementChildren,
 ]
 
-export const RegularBackgroundLayer: Layer = {
-  scale: 0.5,
+export const RegularBackground: ElementProps = {
   fill: "none",
   stroke: "#000000",
-  strokeWidth: 1.4,
+  "stroke-width": 2.8,
 }
 
-export const RegularForegroundLayer: Layer = {
-  scale: 0.5,
+export const RegularForeground: ElementProps = {
   fill: "none",
   stroke: "#ffffff",
-  strokeWidth: 0.5,
+  "stroke-width": 1,
 }
 
 export const RegularLayers = [
-  RegularBackgroundLayer,
-  RegularForegroundLayer,
+  RegularBackground,
+  RegularForeground,
 ]
 
-const defaults: BoomshakOptions = {
+const defaults: Partial<BoomshakOptions> = {
   layers: RegularLayers,
   lineHeight: 16,
   viewBoxFn: calculateViewBox,
 }
 
 function calculateViewBox(text: string): ViewBox {
-  const xm = 2.6
+  const xm = 5.2
   const lines = text.split(/\n/)
 
-  let x = -0.5
+  let x = -1
   switch (lines[0][0]) {
-    case "w": x = -0.23; break
-    case "<": x = -0.33; break
+    case "w": x = -0.46; break
+    case "<": x = -0.66; break
   }
   const y = 0
   const w = xm * lines[0].length - 1
-  const h = 4 * lines.length
+  const h = 8 * lines.length
 
   const viewBox: ViewBox = [
     x,
@@ -122,7 +114,7 @@ function calculateViewBox(text: string): ViewBox {
 function renderGlyph(
   glyph: Glyph,
   x: number,
-  layers: Layer[],
+  layers: ElementProps[],
 ): Element {
   const xScale = 4.8
 
@@ -132,9 +124,7 @@ function renderGlyph(
         stroke,
         x * xScale,
         2,
-        layer.scale,
-        layer.stroke,
-        layer.strokeWidth,
+        layer,
       )
     )
   }).flat()
@@ -147,38 +137,36 @@ function renderGlyph(
 }
 
 export function renderStroke(
-  points: Stroke,
+  stroke: Stroke,
   x = 0,
   y = 0,
-  scale = 1,
-  color = "#000000",
-  width = 1,
+  layer = RegularBackground,
 ): Element {
-  const props: ElementProps = {}
-  props["d"] = `M${points.map((p) => [
-    scale * (p[0] + x),
-    scale * (p[1] + y),
-  ]).join(" L")}`
-  props["fill"] = "none"
-  props["stroke"] = color
-  props["stroke-width"] = width
+  const d = "M" + stroke.map(
+    (p) => [
+      p[0] + x,
+      p[1] + y,
+    ]
+  ).join(" L")
+  const props: ElementProps = {
+    ...layer,
+    d,
+  }
   return ["path", props, []]
 }
 
-export function boomshak(
-  text: string,
-  {
-    layers = defaults.layers,
-    lineHeight = defaults.lineHeight,
-    viewBoxFn = defaults.viewBoxFn,
-  }
-): any {
+export function boomshak({
+  text,
+  layers = defaults.layers,
+  lineHeight = defaults.lineHeight,
+  viewBoxFn = defaults.viewBoxFn,
+}: BoomshakOptions): Element {
   const lines = text.split(/\n/)
   const xm = 2.6
 
   const viewBox = viewBoxFn(text).join(" ")
 
-  const glyphs: any[] = []
+  const glyphs: ElementChildren = []
   lines.forEach((line, y) => {
     const chars = line.split("")
     chars.forEach((char, x) => {
@@ -202,7 +190,7 @@ export function boomshak(
   props["height"] = `${height}px`
   props["width"] = `${width}px`
 
-  const svg = [
+  const svg: Element = [
     "svg",
     props,
     glyphs,
