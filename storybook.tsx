@@ -4,9 +4,8 @@ import {
   boomshak,
   camelProps,
   compile,
-  BoomshakOptions,
-  RegularBackgroundLayer,
-  RegularForegroundLayer,
+  RegularBackground,
+  RegularForeground,
 } from "./boomshak"
 
 function Boomshak({
@@ -14,14 +13,10 @@ function Boomshak({
   layers = undefined,
   lineHeight = 16,
 }): React.ReactElement {
-  const options: BoomshakOptions = {
-    layers,
-    lineHeight,
-  }
-  const element = boomshak(
+  const element = boomshak({
     text,
-    options,
-  )
+    lineHeight,
+  })
   return compile(
     element,
     ([name, props, children], i) => {
@@ -53,12 +48,12 @@ stories.add(`custom layer`, () => (
     text="custom"
     layers={[
       {
-        ...RegularBackgroundLayer,
-        strokeWidth: 1,
+        ...RegularBackground,
+        "stroke-width": 1,
       },
       {
-        ...RegularForegroundLayer,
-        strokeWidth: 0.6,
+        ...RegularForeground,
+        "stroke-width": 0.6,
       },
     ]}
     lineHeight={64}
