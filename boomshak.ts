@@ -74,7 +74,7 @@ export const RegularBackground: ElementProps = {
 
 export const RegularForeground: ElementProps = {
   fill: "none",
-  stroke: "#ffffff",
+  stroke: "#fff1e8",
   "stroke-width": 1,
 }
 
