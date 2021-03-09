@@ -118,16 +118,22 @@ function renderGlyph(
 ): Element {
   const xScale = 4.8
 
-  const children = layers.map(layer => {
-    return glyph.map(
-      stroke => renderStroke(
-        stroke,
-        x * xScale,
-        2,
-        layer,
-      )
-    )
-  }).flat()
+  const children = layers.map(
+    function(layer): Element {
+      const d = glyph.map(
+        stroke => renderStroke(
+          stroke,
+          x * xScale,
+          2,
+        )
+      ).join(" ")
+      const props: ElementProps = {
+        ...layer,
+        d,
+      }
+      return ["path", props, []]
+    }
+  )
 
   return [
     "g",
@@ -140,19 +146,13 @@ export function renderStroke(
   stroke: Stroke,
   x = 0,
   y = 0,
-  layer = RegularBackground,
-): Element {
-  const d = "M" + stroke.map(
+): string {
+  return "M" + stroke.map(
     (p) => [
       p[0] + x,
       p[1] + y,
     ]
   ).join(" L")
-  const props: ElementProps = {
-    ...layer,
-    d,
-  }
-  return ["path", props, []]
 }
 
 export function boomshak({
@@ -1013,7 +1013,6 @@ export const Glyphs: Typeface = {
   ],
 
   b: [
-    //[[0,1], [0,4], [2,4], [2,3], [1,2], [1,1], [0,1]],
     [
       [0, 3],
       [0, 4],
