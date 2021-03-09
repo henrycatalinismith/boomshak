@@ -47,7 +47,7 @@ describe("renderStroke", () => {
       [0, 1],
       [0, 4],
     ]
-    const [$1, props] = renderStroke(stroke)
-    expect(props.d).toBe("M0,1 L0,4")
+    const d = renderStroke(stroke)
+    expect(d).toBe("M0,1 L0,4")
   })
 })
