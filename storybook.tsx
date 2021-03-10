@@ -15,6 +15,7 @@ function Boomshak({
 }): React.ReactElement {
   const element = boomshak({
     text,
+    layers,
     lineHeight,
   })
   return compile(
