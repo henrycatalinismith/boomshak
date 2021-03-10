@@ -5,7 +5,7 @@ const {
   boomshak,
   compile,
   renderStroke,
-  Glyphs,
+  Boomshak,
 } = require("./boomshak")
 
 function monkeypatch(cls, fn) {
@@ -44,7 +44,7 @@ function animation() {
     ],
   }, e => {
     const o = renderStroke(
-      Glyphs["o"][0],
+      Boomshak["o"][0],
       0,
     )
 

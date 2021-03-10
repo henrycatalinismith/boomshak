@@ -7,7 +7,7 @@ export type Stroke = Point[]
 
 export type Glyph = Stroke[]
 
-export type CharacterRange =
+export type Character =
   | "0" | "1" | "2" | "3" | "4"
   | "5" | "6" | "7" | "8" | "9"
 
@@ -34,7 +34,7 @@ export type CharacterRange =
   | "z"
 
 export type Typeface = {
-  [k in CharacterRange]: Glyph
+  [k in Character]: Glyph
 }
 
 export type ViewBox = [
@@ -111,9 +111,9 @@ function calculateViewBox(text: string): ViewBox {
   return viewBox
 }
 
-function renderGlyph(
+export function renderGlyph(
   glyph: Glyph,
-  x: number,
+  [x = 0, y = 0]: Point,
   layers: ElementProps[],
 ): Element {
   const xScale = 4.8
@@ -123,8 +123,10 @@ function renderGlyph(
       const d = glyph.map(
         stroke => renderStroke(
           stroke,
-          x * xScale,
-          2,
+          [
+            x * xScale,
+            y,
+          ],
         )
       ).join(" ")
       const props: ElementProps = {
@@ -144,10 +146,13 @@ function renderGlyph(
 
 export function renderStroke(
   stroke: Stroke,
-  x = 0,
-  y = 0,
+  [x = 0, y = 0]: Point,
+  length = stroke.length,
 ): string {
-  return "M" + stroke.map(
+  const points = [...Array(length)].map(
+    ($1, i) => arrayBounce(stroke, i)
+  )
+  return "M" + points.map(
     (p) => [
       p[0] + x,
       p[1] + y,
@@ -171,8 +176,8 @@ export function boomshak({
     const chars = line.split("")
     chars.forEach((char, x) => {
       glyphs.push(renderGlyph(
-        Glyphs[char],
-        x,
+        Boomshak[char],
+        [x, 2],
         layers,
       ))
     })
@@ -197,6 +202,18 @@ export function boomshak({
   ]
 
   return svg
+}
+
+export function arrayBounce<T>(
+  a: T[],
+  i: number,
+): T {
+  const n = a.length - 1
+  return a[(
+    (Math.floor(i / n) % 2 == 0)
+    ? i % n
+    : n - (i % n)
+  )]
 }
 
 function camelCase(string: string): string {
@@ -243,7 +260,7 @@ export function compile(
   ], i)
 }
 
-export const Glyphs: Typeface = {
+export const Boomshak: Typeface = {
   "0": [
     [
       [0, 0],

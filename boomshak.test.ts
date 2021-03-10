@@ -1,11 +1,27 @@
 import {
+  Boomshak,
   Element,
   ElementProps,
   Stroke,
+  arrayBounce,
   camelProps,
   compile,
+  renderGlyph,
   renderStroke,
 } from "./boomshak"
+
+describe("arrayBounce", () => {
+  it("wraps an array index back and forth through the array", () => {
+    const array = ["a", "b", "c"]
+    expect(arrayBounce(array, 0)).toBe("a")
+    expect(arrayBounce(array, 1)).toBe("b")
+    expect(arrayBounce(array, 2)).toBe("c")
+    expect(arrayBounce(array, 3)).toBe("b")
+    expect(arrayBounce(array, 4)).toBe("a")
+    expect(arrayBounce(array, 5)).toBe("b")
+    expect(arrayBounce(array, 6)).toBe("c")
+  })
+})
 
 describe("camelProps", () => {
   it("transforms kebab-case props to camelCase", () => {
@@ -47,7 +63,26 @@ describe("renderStroke", () => {
       [0, 1],
       [0, 4],
     ]
-    const d = renderStroke(stroke)
+    const d = renderStroke(stroke, [0, 0])
     expect(d).toBe("M0,1 L0,4")
+  })
+
+  it("pads the shape definition to the given length", () => {
+    const stroke: Stroke = [
+      [0, 1],
+      [0, 4],
+    ]
+    const d = renderStroke(stroke, [0, 0], 6)
+    expect(d).toBe("M0,1 L0,4 L0,1 L0,4 L0,1 L0,4")
+  })
+
+  it("pads the shape definition to the given length", () => {
+    const stroke: Stroke = [
+      [0, 1],
+      [0, 4],
+      [1, 2],
+    ]
+    const d = renderStroke(stroke, [0, 0], 6)
+    expect(d).toBe("M0,1 L0,4 L1,2 L0,4 L0,1 L0,4")
   })
 })
