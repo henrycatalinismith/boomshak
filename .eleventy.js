@@ -4,6 +4,8 @@ const sass = require("sass")
 const {
   boomshak,
   compile,
+  padTypeface,
+  renderGlyph,
   renderStroke,
   Boomshak,
 } = require("./boomshak")
@@ -36,6 +38,7 @@ function compileBoomshak(
 function animation() {
   return compileBoomshak({
     text: "b",
+    typeface: padTypeface(Boomshak),
     viewBoxFn: () => [
       -14,
       -26,
@@ -43,9 +46,9 @@ function animation() {
       64,
     ],
   }, e => {
-    const o = renderStroke(
-      Boomshak["o"][0],
-      0,
+    const o = renderGlyph(
+      padTypeface(Boomshak)["$"],
+      [0,0],
     )
 
     e[2][0][2] = e[2][0][2].map((c, i) => {
@@ -76,11 +79,11 @@ function animation() {
             "attributeType": "XML",
             "from": c[1].d,
             "to": o,
-            "dur": `${Math.pow(2, 10)}ms`,
-            "repeatCount": "indefinite",
+            "dur": `${Math.pow(2, 11)}ms`,
+            "repeatCount": "1",
           },
           [],
-        ]
+        ],
       ]
 
       return [

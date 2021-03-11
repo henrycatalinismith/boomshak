@@ -7,7 +7,7 @@ export type Stroke = Point[]
 
 export type Glyph = Stroke[]
 
-export type Character =
+export type CharacterRange =
   | "0" | "1" | "2" | "3" | "4"
   | "5" | "6" | "7" | "8" | "9"
 
@@ -33,8 +33,8 @@ export type Character =
   | "u" | "v" | "w" | "x" | "y"
   | "z"
 
-export type Typeface = {
-  [k in Character]: Glyph
+export type Typeface<T extends string> = {
+  [k in T]: Glyph
 }
 
 export type ViewBox = [
@@ -48,6 +48,7 @@ export interface BoomshakOptions {
   text: string
   layers?: ElementProps[]
   lineHeight?: number
+  typeface?: Typeface<string>
   viewBoxFn?: (string) => ViewBox
 }
 
@@ -94,6 +95,9 @@ export function arrayBounce<T>(
   i: number,
 ): T {
   const n = a.length - 1
+  if (n === 0) {
+    return a[0]
+  }
   return a[(
     (Math.floor(i / n) % 2 == 0)
     ? i % n
@@ -105,23 +109,31 @@ export function boomshak({
   text,
   layers = defaults.layers,
   lineHeight = defaults.lineHeight,
+  typeface = Boomshak,
   viewBoxFn = defaults.viewBoxFn,
 }: BoomshakOptions): Element {
   const lines = text.split(/\n/)
   const xm = 2.6
-
   const viewBox = viewBoxFn(text).join(" ")
 
-  const glyphs: ElementChildren = []
-  lines.forEach((line, y) => {
-    const chars = line.split("")
-    chars.forEach((char, x) => {
-      glyphs.push(renderGlyph(
-        Boomshak[char],
-        [x, 2],
-        layers,
-      ))
-    })
+  const glyphs = splitChars(
+    text,
+  ).map(([[x, y], char]): Element => {
+    return [
+      "g",
+      {},
+      layers.map(layer => [
+        "path",
+        {
+          ...layer,
+          d: renderGlyph(
+            typeface[char],
+            [x, 2],
+          ),
+        },
+        [],
+      ]),
+    ]
   })
 
   const height = lineHeight
@@ -209,46 +221,110 @@ export function compile(
   ], i)
 }
 
+export function map(
+  typeface: Typeface<string>,
+  fn: (Glyph) => Glyph,
+): Typeface<string> {
+  return Object
+    .entries(typeface)
+    .map(([k, v]) => [k, fn(v)])
+    .reduce((o, [k, v]) => ({
+      ...o,
+      [k as string]: v,
+    }), {})
+}
+
+export function max<T = number>(
+  l: T[],
+  fn = function(n: T): number {
+    return n as unknown as number
+  }
+): number {
+  return l.reduce((m, n) => {
+    const v = fn(n)
+    return v > m ? v : m
+  }, -Infinity)
+}
+
+export function maxPoints(
+  typeface: Typeface<string>,
+): number {
+  return max<Glyph>(
+    Object
+      .entries(typeface)
+      .map(([char, glyph]) => glyph),
+    glyph => max<Stroke>(
+      glyph,
+      stroke => stroke.length,
+    ),
+  )
+}
+
+export function maxStrokes(
+  typeface: Typeface<string>,
+): number {
+  return max<Glyph>(
+    Object
+      .entries(typeface)
+      .map(([char, glyph]) => glyph),
+    glyph => glyph.length,
+  )
+}
+
+export function padGlyph(
+  glyph: Glyph,
+  strokeCount: number,
+): Glyph {
+  return times<Stroke>(
+    strokeCount,
+    i => arrayBounce(glyph, i),
+  )
+}
+
+export function padStroke(
+  stroke: Stroke,
+  pointCount: number,
+): Stroke {
+  return times<Point>(
+    pointCount,
+    i => arrayBounce(stroke, i),
+  )
+}
+
+export function padTypeface(
+  typeface: Typeface<string>
+): Typeface<string> {
+  const points = maxPoints(typeface)
+  const strokes = maxStrokes(typeface)
+  return map(
+    typeface,
+    glyph => padGlyph(
+      glyph.map(s => padStroke(s, points)),
+      strokes
+    )
+  )
+}
+
 export function renderGlyph(
   glyph: Glyph,
   [x = 0, y = 0]: Point,
-  layers: ElementProps[],
-): Element {
-  const xScale = 4.8
-  const children = layers.map(
-    function(layer): Element {
-      const d = glyph.map(
-        stroke => renderStroke(
-          stroke,
-          [
-            x * xScale,
-            y,
-          ],
-        )
-      ).join(" ")
-      const props: ElementProps = {
-        ...layer,
-        d,
-      }
-      return ["path", props, []]
-    }
-  )
-  return [
-    "g",
-    {},
-    children,
-  ]
+): string {
+  return glyph.map(
+    stroke => renderStroke(
+      stroke,
+      [
+        x * 4.8,
+        y,
+      ],
+    )
+  ).join(" ")
 }
 
 export function renderStroke(
   stroke: Stroke,
   [x = 0, y = 0]: Point,
-  length = stroke.length,
 ): string {
-  const points = [...Array(length)].map(
-    ($1, i) => arrayBounce(stroke, i)
-  )
-  return "M" + points.map(
+  return "M" + stroke.map(
     (p) => [
       p[0] + x,
       p[1] + y,
@@ -256,7 +332,42 @@ export function renderStroke(
   ).join(" L")
 }
 
-export const Boomshak: Typeface = {
+export function splitChars(
+  text: string,
+): [Point, string][] {
+  return text
+    .split(/\n/)
+    .map((line, y) => [
+      y,
+      line.split(""),
+    ])
+    .map(([y, l]) => (l as string[]).map(
+      (c,x) => [x,y,c])
+    )
+    .flat()
+    .map(([x,y,c]) => {
+      return [
+        [
+          x as unknown as number,
+          y as unknown as number
+        ],
+        c as unknown as string,
+      ]
+    })
+}
+
+export function times<T>(
+  n: number,
+  fn = function(i: number): T {
+    return i as unknown as T
+  }
+): T[] {
+  return [...Array(n)].map(
+    ($1, i) => fn(i)
+  )
+}
+
+export const Boomshak: Typeface<CharacterRange> = {
   "0": [
     [
       [0, 0],
