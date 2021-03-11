@@ -36,21 +36,25 @@ function compileBoomshak(
 }
 
 function animation() {
-  return compileBoomshak({
-    text: "b",
-    typeface: padTypeface(Boomshak),
-    viewBoxFn: () => [
-      -14,
-      -26,
-      64,
-      64,
-    ],
-  }, e => {
-    const o = renderGlyph(
-      padTypeface(Boomshak)["$"],
+  const typeface = padTypeface(Boomshak)
+  const chars = "abcdefghiklmnopqrstuvwxyz".split("")
+  const paths = chars.map(l => {
+    return renderGlyph(
+      typeface[l],
       [0,0],
     )
+  })
 
+  return compileBoomshak({
+    text: chars[0],
+    typeface,
+    viewBoxFn: () => [
+      -3,
+      -2,
+      8,
+      8,
+    ],
+  }, e => {
     e[2][0][2] = e[2][0][2].map((c, i) => {
       /*
         <animate
@@ -63,28 +67,33 @@ function animation() {
           fill="freeze"
         />
       */
-      console.log(c)
-      console.log(o)
       const props = {
         ...c[1],
         id: `p${i}`,
       }
 
-      const children = [
-        [
+      const children = chars.slice(1).map((l, j) => {
+        return [
           "animate",
           {
+            "id": `a${i}${j}`,
             "xlink:href": `#p${i}`,
             "attributeName": "d",
             "attributeType": "XML",
-            "from": c[1].d,
-            "to": o,
-            "dur": `${Math.pow(2, 11)}ms`,
+            "from": paths[j],
+            "to": paths[j+1],
+            "begin": j
+              ? `a${i}${j-1}.end`
+              : `1s;a${i}${chars.slice(1).length - 1}.end+1s`,
+            "dur": `${Math.pow(2, 7)}ms`,
             "repeatCount": "1",
+            "keySplines": ".42 0 1 1",
+            "calcMode": "spline",
+            "fill": "freeze",
           },
           [],
-        ],
-      ]
+        ]
+      })
 
       return [
         c[0],
@@ -92,7 +101,6 @@ function animation() {
         children,
       ]
     })
-    console.log(e[2][0][2])
     return e
   })
 }
