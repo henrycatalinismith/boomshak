@@ -1,5 +1,6 @@
 const chokidar = require("chokidar")
 const createHtmlElement = require("create-html-element")
+const fs = require("fs-extra")
 const sass = require("sass")
 const {
   boomshak,
@@ -34,7 +35,9 @@ function compileBoomshak(
   )
 }
 
-function animation() {
+const images = {}
+
+images.animation = function() {
   const dur = Math.pow(2, 7)
   const gap = Math.pow(2, 9)
   const typeface = padTypeface(Boomshak)
@@ -161,7 +164,17 @@ module.exports = function(eleventyConfig) {
   eleventyConfig.addShortcode(
     "header",
     function() {
-      return animation()
+      return images.animation()
     }
   )
+
+  fs.ensureDirSync("_site")
+  Object
+    .entries(images)
+    .forEach(([name, fn]) => {
+      fs.writeFileSync(
+        `_site/${name}.svg`,
+        fn()
+      )
+    })
 }
