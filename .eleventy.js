@@ -92,6 +92,7 @@ images.animation = function() {
   }
 
   const transform = ([name, props, children]) => {
+    props["xmlns:xlink"] = "http://www.w3.org/1999/xlink"
     children[0][2] = children[0][2].map((c, i) => {
       return animatePath(c, i)
     })
