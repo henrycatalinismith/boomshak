@@ -89,75 +89,16 @@ const defaults: Partial<BoomshakOptions> = {
   viewBoxFn: calculateViewBox,
 }
 
-function calculateViewBox(text: string): ViewBox {
-  const xm = 5.2
-  const lines = text.split(/\n/)
-
-  let x = -1
-  switch (lines[0][0]) {
-    case "w": x = -0.46; break
-    case "<": x = -0.66; break
-  }
-  const y = 0
-  const w = xm * lines[0].length - 1
-  const h = 8 * lines.length
-
-  const viewBox: ViewBox = [
-    x,
-    y,
-    w,
-    h,
-  ]
-  return viewBox
-}
-
-export function renderGlyph(
-  glyph: Glyph,
-  [x = 0, y = 0]: Point,
-  layers: ElementProps[],
-): Element {
-  const xScale = 4.8
-
-  const children = layers.map(
-    function(layer): Element {
-      const d = glyph.map(
-        stroke => renderStroke(
-          stroke,
-          [
-            x * xScale,
-            y,
-          ],
-        )
-      ).join(" ")
-      const props: ElementProps = {
-        ...layer,
-        d,
-      }
-      return ["path", props, []]
-    }
-  )
-
-  return [
-    "g",
-    {},
-    children,
-  ]
-}
-
-export function renderStroke(
-  stroke: Stroke,
-  [x = 0, y = 0]: Point,
-  length = stroke.length,
-): string {
-  const points = [...Array(length)].map(
-    ($1, i) => arrayBounce(stroke, i)
-  )
-  return "M" + points.map(
-    (p) => [
-      p[0] + x,
-      p[1] + y,
-    ]
-  ).join(" L")
+export function arrayBounce<T>(
+  a: T[],
+  i: number,
+): T {
+  const n = a.length - 1
+  return a[(
+    (Math.floor(i / n) % 2 == 0)
+    ? i % n
+    : n - (i % n)
+  )]
 }
 
 export function boomshak({
@@ -204,16 +145,24 @@ export function boomshak({
   return svg
 }
 
-export function arrayBounce<T>(
-  a: T[],
-  i: number,
-): T {
-  const n = a.length - 1
-  return a[(
-    (Math.floor(i / n) % 2 == 0)
-    ? i % n
-    : n - (i % n)
-  )]
+function calculateViewBox(text: string): ViewBox {
+  const xm = 5.2
+  const lines = text.split(/\n/)
+  let x = -1
+  switch (lines[0][0]) {
+    case "w": x = -0.46; break
+    case "<": x = -0.66; break
+  }
+  const y = 0
+  const w = xm * lines[0].length - 1
+  const h = 8 * lines.length
+  const viewBox: ViewBox = [
+    x,
+    y,
+    w,
+    h,
+  ]
+  return viewBox
 }
 
 function camelCase(string: string): string {
@@ -258,6 +207,53 @@ export function compile(
       (c,j) => compile(c, fn, j)
     ),
   ], i)
+}
+
+export function renderGlyph(
+  glyph: Glyph,
+  [x = 0, y = 0]: Point,
+  layers: ElementProps[],
+): Element {
+  const xScale = 4.8
+  const children = layers.map(
+    function(layer): Element {
+      const d = glyph.map(
+        stroke => renderStroke(
+          stroke,
+          [
+            x * xScale,
+            y,
+          ],
+        )
+      ).join(" ")
+      const props: ElementProps = {
+        ...layer,
+        d,
+      }
+      return ["path", props, []]
+    }
+  )
+  return [
+    "g",
+    {},
+    children,
+  ]
+}
+
+export function renderStroke(
+  stroke: Stroke,
+  [x = 0, y = 0]: Point,
+  length = stroke.length,
+): string {
+  const points = [...Array(length)].map(
+    ($1, i) => arrayBounce(stroke, i)
+  )
+  return "M" + points.map(
+    (p) => [
+      p[0] + x,
+      p[1] + y,
+    ]
+  ).join(" L")
 }
 
 export const Boomshak: Typeface = {
