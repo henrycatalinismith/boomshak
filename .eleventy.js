@@ -40,15 +40,18 @@ function animation() {
   const typeface = padTypeface(Boomshak)
   const chars = "9876543210AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZz".split("")
   const paths = chars.map(l => {
+    const y = l.match(/[a-z]/)
+      ? 1.5
+      : 2
     return renderGlyph(
       typeface[l],
-      [0,2],
+      [0,y],
     )
   })
 
   const viewBoxFn = () => [
     -3,
-    0,
+    -0.10,
     8,
     8,
   ]
