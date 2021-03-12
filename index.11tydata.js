@@ -1,6 +1,8 @@
 const fs = require("fs-extra")
 const _ = require("lodash")
 const fromMarkdown = require("mdast-util-from-markdown")
+const sass = require("sass")
+console.log(Math.random())
 
 const package = fs.readJSONSync("package.json")
 const markdown = fs.readFileSync("readme.md", "utf-8")
@@ -17,7 +19,12 @@ const readme = {
   abstract,
 }
 
+const { css } = sass.renderSync({
+  file: "style.scss",
+})
+
 module.exports = {
+  css,
   package,
   readme,
 }

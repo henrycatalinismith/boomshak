@@ -22,7 +22,7 @@ description: vector font
     </title>
 
     <style>
-      {% css %}
+      {{ css | safe }}
     </style>
   </head>
   <body>
@@ -39,6 +39,8 @@ description: vector font
           {{ package.description }}
         </p>
       </header>
+
+      {% image_characters %}
 
       {{ readme.abstract | safe }}
 

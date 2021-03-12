@@ -48,7 +48,7 @@ images.animation = function() {
       : 2
     return renderGlyph(
       typeface[l],
-      [0,y],
+      [0,0],
     )
   })
 
@@ -128,6 +128,37 @@ images.boomshak = function () {
   }, transform)
 }
 
+images.characters = function () {
+  const transform = ([name, props, children]) => {
+    props["aria-label"] = "supported characters"
+    props["preserveAspectRatio"] = "xMinYMin meet"
+    return [
+      name,
+      props,
+      children,
+    ]
+  }
+
+  const text = [
+    "AaBbCcDdEeFfGgHh",
+    "IiJjKkLlMmNnOoPp",
+    "QqRrSsTtUuVvWwXx",
+    "YyZz0123456789!@",
+    "#$%^&*(){}[]<>?|",
+    "_-,.~\"'`/\\",
+  ].join("\n")
+
+  return compileBoomshak({
+    text,
+    viewBoxFn: () => [
+      -2,
+      0,
+      82,
+      48,
+    ],
+  }, transform)
+}
+
 module.exports = function(eleventyConfig) {
   eleventyConfig.addWatchTarget("style.scss")
 
@@ -169,16 +200,6 @@ module.exports = function(eleventyConfig) {
       monkeypatch(Eleventy, watch)
     }
   })
-
-  eleventyConfig.addShortcode(
-    "css",
-    function() {
-      const { css } = sass.renderSync({
-        file: "style.scss",
-      })
-      return css
-    }
-  )
 
   eleventyConfig.addShortcode(
     "animation",
