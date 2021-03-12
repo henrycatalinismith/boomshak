@@ -28,6 +28,13 @@
   }
 }
 
+@media (min-width: 32rem) {
+  :root {
+    --abstractFontSize: 1.4rem;
+    --abstractLineHeight: 1.4em;
+  }
+}
+
 html {
   box-sizing: border-box;
 }
@@ -87,8 +94,13 @@ aside svg {
   width: var(--box);
 }
 
+[aria-label="supported characters"] {
+  height: var(--box);
+  width: var(--box);
+}
+
 [itemprop="abstract"] {
-  font-family: Helvetica;
+  font-family: Rockwell;
   margin: 0;
 
   font-size: var(--abstractFontSize);

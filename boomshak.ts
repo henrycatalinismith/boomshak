@@ -128,7 +128,7 @@ export function boomshak({
           ...layer,
           d: renderGlyph(
             typeface[char],
-            [x, 2],
+            [x, y],
           ),
         },
         [],
@@ -316,7 +316,7 @@ export function renderGlyph(
       stroke,
       [
         x * 4.8,
-        y,
+        ((y+1) * 2) + (y*6),
       ],
     )
   ).join(" ")
@@ -1161,16 +1161,15 @@ export const Boomshak: Typeface<CharacterRange> = {
   ],
 
   d: [
-    //[[0,1], [0,4], [1,4], [2,3], [2,2], [1,1], [0,1]],
     [
-      [0, 3],
+      [0, 2],
       [0, 4],
       [1, 4],
       [2, 3],
       [2, 2],
       [1, 1],
       [0, 1],
-      [0, 2],
+      [0, 3],
     ],
   ],
 
