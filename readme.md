@@ -2,7 +2,20 @@
   <img
     alt="boomshak"
     src="https://hen.cat/boomshak/boomshak.svg"
+    height="64"
   />
+</p>
+
+<p align="center">
+  <strong>
+    vector font toolkit inspired by PICO-8
+  </strong>
+</p>
+
+<p align="center">
+  <a href="https://hen.cat/boomshak">
+    <strong><code>[homepage]</code></strong>
+  </a>
 </p>
 
 <p itemprop="abstract">
