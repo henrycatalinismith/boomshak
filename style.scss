@@ -4,11 +4,27 @@
   --wide: 32rem;
   --box: min(var(--tiny), var(--wide));
   --edge: calc((100vw - var(--box)) / 2);
+
+  --abstractFontSize: 1rem;
+  --abstractLineHeight: 1.2em;
 }
 
 @media (min-width: 16rem) {
   :root {
     --padding: 1rem
+  }
+}
+
+@media (min-width: 20rem) {
+  :root {
+    --abstractFontSize: 1.2rem;
+  }
+}
+
+@media (min-width: 24rem) {
+  :root {
+    --abstractFontSize: 1.4rem;
+    --abstractLineHeight: 1.4em;
   }
 }
 
@@ -67,6 +83,16 @@ header p {
 }
 
 aside svg {
+  height: var(--box);
+  width: var(--box);
+}
+
+[itemprop="abstract"] {
+  font-family: Helvetica;
+  margin: 0;
+
+  font-size: var(--abstractFontSize);
+  line-height: var(--abstractLineHeight);
   height: var(--box);
   width: var(--box);
 }
