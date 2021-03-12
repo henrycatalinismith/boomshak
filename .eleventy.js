@@ -92,6 +92,7 @@ images.animation = function() {
   }
 
   const transform = ([name, props, children]) => {
+    props["aria-label"] = "animation showing characters morphing into one another"
     props["xmlns:xlink"] = "http://www.w3.org/1999/xlink"
     children[0][2] = children[0][2].map((c, i) => {
       return animatePath(c, i)
@@ -112,6 +113,7 @@ images.animation = function() {
 
 images.boomshak = function () {
   const transform = ([name, props, children]) => {
+    props["aria-label"] = "boomshak"
     props["preserveAspectRatio"] = "xMinYMid meet"
     return [
       name,
