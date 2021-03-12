@@ -142,6 +142,8 @@ export function boomshak({
     * lines[0].length
 
   const props: ElementProps = {}
+  props["xmlns"] = "http://www.w3.org/2000/svg"
+  props["xmlns:xlink"] = "http://www.w3.org/1999/xlink"
   props["viewBox"] = viewBox
   props["stroke-linecap"] = "round"
   props["stroke-linejoin"] = "round"
