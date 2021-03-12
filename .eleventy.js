@@ -110,6 +110,24 @@ images.animation = function() {
   }, transform)
 }
 
+images.boomshak = function () {
+  const transform = ([name, props, children]) => {
+    props["preserveAspectRatio"] = "xMinYMid meet"
+    return [
+      name,
+      props,
+      children,
+    ]
+  }
+
+  return compileBoomshak({
+    text: "boomshak",
+    viewBoxFn: () => [
+      -1.5, 1.5, 39, 6
+    ],
+  }, transform)
+}
+
 module.exports = function(eleventyConfig) {
   eleventyConfig.addWatchTarget("style.scss")
 
@@ -163,16 +181,20 @@ module.exports = function(eleventyConfig) {
   )
 
   eleventyConfig.addShortcode(
-    "header",
-    function() {
-      return images.animation()
-    }
+    "animation",
+    images.animation
   )
 
   fs.ensureDirSync("_site")
   Object
     .entries(images)
     .forEach(([name, fn]) => {
+
+      eleventyConfig.addShortcode(
+        `image_${name}`,
+        fn,
+      )
+
       fs.writeFileSync(
         `_site/${name}.svg`,
         fn()

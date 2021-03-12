@@ -35,10 +35,38 @@ main {
 }
 
 header {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  margin: 1rem 0 0 0;
+  height: var(--box);
   width: var(--box);
 }
 
-svg {
+h1 {
+  font-family: Futura, sans-serif;
+  font-size: 3rem;
+  font-weight: bold;
+  margin: 0
+}
+
+h1 span {
+  display: none;
+}
+
+header svg {
+  width: 100%;
+  height: 3rem;
+}
+
+header p {
+  font-family: Rockwell;
+  font-size: 1.5rem;
+  margin: 0 0 1rem 0;
+  text-transform: lowercase;
+}
+
+aside svg {
   height: var(--box);
   width: var(--box);
 }
