@@ -42,56 +42,9 @@ description: vector font
         </p>
       </header>
 
-      {{ readme.abstract | safe }}
+      {% image_animation %}
 
       {% image_characters %}
-
-      <section
-        itemprop="workExample"
-        itemscope
-        itemtype="http://schema.org/CreativeWork">
-
-        <p>
-          Animation is one of the main things I want boomshak
-          to be useful for.
-          Animating SVG path transitions requires the paths
-          before & after the transition to have the same
-          number and type of points, which is a challenge when
-          animating letters, as each letter differs in its
-          number of strokes and how many points each stroke
-          contains.
-          But by repeating strokes and points until each glyph's
-          path is as long as the very longest glyph, you can
-          animate a path transition between any pair of letters.
-        </p>
-
-        <div></div>
-
-        <script>
-          {% set anim %}{% image_animation %}{% endset %}
-          const callback = function([{ isIntersecting }]) {
-            if (isIntersecting) {
-              observer.unobserve(placeholder)
-              placeholder.innerHTML = `{{ anim | safe }}`
-            }
-          }
-          const options = {
-            threshold: 0.3
-          }
-          const placeholder = document.querySelector(
-            "[itemprop='workExample'] div"
-          )
-          const animation = document.querySelector(
-            "[itemprop='workExample'] svg[aria-label]"
-          )
-          const observer = new IntersectionObserver(
-            callback,
-            options
-          )
-          observer.observe(placeholder)
-        </script>
-
-      </section>
 
     </main>
   </body>
