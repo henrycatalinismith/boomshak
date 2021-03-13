@@ -35,6 +35,7 @@
   <img
     alt="supported characters"
     src="https://hen.cat/boomshak/characters.svg"
+    width="256"
     height="256"
   />
 </p>
