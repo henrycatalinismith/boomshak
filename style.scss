@@ -51,19 +51,16 @@ body {
   margin: 0;
 }
 
-main,
-[itemprop="workExample"] {
+main {
   align-items: center;
   display: flex;
   flex-direction: column;
-  row-gap: 2rem;
 }
 
 header {
   display: flex;
   flex-direction: column;
   justify-content: center;
-  row-gap: 1rem;
   height: var(--box);
   width: var(--box);
 }
@@ -75,6 +72,7 @@ h1 {
 header svg {
   width: 100%;
   height: 3rem;
+  margin-bottom: 1rem;
 }
 
 header p {
@@ -84,28 +82,7 @@ header p {
   text-transform: lowercase;
 }
 
-aside svg {
-  height: var(--box);
-  width: var(--box);
-}
-
-[aria-label="supported characters"],
-[itemprop="workExample"] svg {
-  height: var(--box);
-  width: var(--box);
-}
-
-[itemprop="abstract"],
-[itemprop="workExample"] p {
-  font-family: Arial;
-  margin: 0;
-
-  font-size: var(--abstractFontSize);
-  line-height: var(--abstractLineHeight);
-  width: var(--box);
-}
-
-[itemprop="workExample"] div {
+svg {
   height: var(--box);
   width: var(--box);
 }
