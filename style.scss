@@ -69,7 +69,7 @@ h1 {
   display: none;
 }
 
-header svg {
+header svg:nth-child(2) {
   width: 100%;
   height: 3rem;
   margin-bottom: 1rem;
@@ -78,11 +78,33 @@ header svg {
 header p {
   font-family: Rockwell;
   font-size: 1.5rem;
-  margin: 0 0 1rem 0;
+  margin: 0;
   text-transform: lowercase;
 }
 
-svg {
+header a[href*="github"] {
+  align-items: center;
+  color: dodgerblue;
+  display: flex;
+  flex-direction: row;
+  font-family: Futura, sans-serif;
+  font-size: 1.2rem;
+  margin-top: 0.5rem;
+  text-decoration: none;
+}
+
+header a[href*="github"]:hover {
+  text-decoration: underline;
+}
+
+header a[href*="github"] svg {
+  fill: dodgerblue;
+  margin-right: 0.5ch;
+  height: 1.4rem;
+  width: 1.4rem;
+}
+
+main > svg {
   height: var(--box);
   width: var(--box);
 }
