@@ -143,19 +143,22 @@ images.characters = function () {
 
   const text = [
     "AaBbCcDdEeFfGgHh",
+    "",
     "IiJjKkLlMmNnOoPp",
+    "",
     "QqRrSsTtUuVvWwXx",
+    "",
     "YyZz0123456789!@",
+    "",
     "#$%^&*(){}[]<>?|",
-    "_-,.~\"'`/\\",
   ].join("\n")
 
   return compileBoomshak({
     text,
     viewBoxFn: () => [
       -2,
-      0,
-      82,
+      -3,
+      78,
       48,
     ],
   }, transform)

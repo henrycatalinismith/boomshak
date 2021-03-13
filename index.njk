@@ -3,7 +3,11 @@ title: boomshak
 description: vector font
 ---
 <!doctype html>
-<html lang="en" dir="ltr">
+<html
+  lang="en"
+  dir="ltr"
+  itemscope
+  itemtype="http://schema.org/SoftwareSourceCode">
   <head>
     <meta charset="utf-8" />
 
@@ -29,20 +33,18 @@ description: vector font
     <main>
 
       <header>
-        <h1>
-          <span>
-            title
-          </span>
-          {% image_boomshak %}
+        <h1 itemprop="name">
+          {{ title }}
         </h1>
-        <p>
+        {% image_boomshak %}
+        <p itemprop="description">
           {{ package.description }}
         </p>
       </header>
 
-      {% image_characters %}
-
       {{ readme.abstract | safe }}
+
+      {% image_characters %}
 
       <aside>
         {% image_animation %}

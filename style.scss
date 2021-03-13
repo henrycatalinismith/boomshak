@@ -17,14 +17,14 @@
 
 @media (min-width: 20rem) {
   :root {
-    --abstractFontSize: 1.2rem;
+    --abstractFontSize: 1.0rem;
   }
 }
 
 @media (min-width: 24rem) {
   :root {
-    --abstractFontSize: 1.4rem;
-    --abstractLineHeight: 1.4em;
+    --abstractFontSize: 1.2rem;
+    --abstractLineHeight: 1.2em;
   }
 }
 
@@ -61,19 +61,13 @@ header {
   display: flex;
   flex-direction: column;
   justify-content: center;
+  row-gap: 1rem;
   margin: 1rem 0 0 0;
   height: var(--box);
   width: var(--box);
 }
 
 h1 {
-  font-family: Futura, sans-serif;
-  font-size: 3rem;
-  font-weight: bold;
-  margin: 0
-}
-
-h1 span {
   display: none;
 }
 
@@ -100,7 +94,7 @@ aside svg {
 }
 
 [itemprop="abstract"] {
-  font-family: Rockwell;
+  font-family: Arial;
   margin: 0;
 
   font-size: var(--abstractFontSize);

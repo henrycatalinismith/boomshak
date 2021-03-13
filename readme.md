@@ -20,9 +20,19 @@
 
 <p itemprop="abstract">
   boomshak is a toolkit for rendering text using SVG.
-  The font itself is directly inspired by the built-in pixel
-  font in the PICO-8 fantasy console.
+  The font itself is directly inspired by the PICO-8 fantasy
+  console's built-in pixel font.
   The toolkit as a whole is inspired more generally by the
   simplicity of PICO-8's design and the creativity of the
-  PICO-8 community in pushing the boundaries of the platform.
+  PICO-8 community in pushing its boundaries.
+  I wanted to bring some of that magic to the stuff I do on the
+  web, and boomshak is part of that.
+  So the package is as simple and flexible as possible so that
+  it's usable for all kinds of different ideas and projects.
 </p>
+
+<img
+  alt="supported characters"
+  src="https://hen.cat/boomshak/characters.svg"
+  height="512"
+/>
