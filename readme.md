@@ -31,8 +31,10 @@
   it's usable for all kinds of different ideas and projects.
 </p>
 
-<img
-  alt="supported characters"
-  src="https://hen.cat/boomshak/characters.svg"
-  height="512"
-/>
+<p align="center">
+  <img
+    alt="supported characters"
+    src="https://hen.cat/boomshak/characters.svg"
+    height="256"
+  />
+</p>
