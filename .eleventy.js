@@ -38,6 +38,7 @@ function compileBoomshak(
 const images = {}
 
 images.animation = function() {
+  const delay = Math.pow(2, 10)
   const dur = Math.pow(2, 7)
   const gap = Math.pow(2, 9)
   const typeface = padTypeface(Boomshak)
@@ -66,7 +67,7 @@ images.animation = function() {
     props.fill = "freeze"
     props.repeatCount = 1
 
-    props.begin = `${((j+1) * dur) + (j * gap)}ms`
+    props.begin = `${delay + ((j+1) * dur) + (j * gap)}ms`
     props.dur = `${dur}ms`
     props.from = paths[j]
     props.to = paths[j+1]
