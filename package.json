@@ -1,11 +1,11 @@
 {
-  "name": "@hendotcat/boomshak",
+  "name": "@henrycatalinismith/boomshak",
   "description": "Vector font toolkit inspired by PICO-8",
-  "version": "0.0.9",
+  "version": "0.0.10",
   "license": "CC0-1.0",
   "author": {
     "name": "Henry Catalini Smith",
-    "email": "smith@hen.cat",
+    "email": "henry@catalinismith.com",
     "url": "https://hen.cat/"
   },
   "repository": {
