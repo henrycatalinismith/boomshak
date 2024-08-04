@@ -32,7 +32,7 @@ it's usable for all kinds of different ideas and projects.
 <p align="center">
   <img
     alt="supported characters"
-    src="https://hen.cat/boomshak/characters.svg"
+    src="https://henry.catalinismith.com/boomshak/characters.svg"
     width="256"
     height="256"
   />
