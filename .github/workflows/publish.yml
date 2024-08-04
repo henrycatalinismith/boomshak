@@ -7,32 +7,30 @@ jobs:
   publish:
     runs-on: ubuntu-16.04
     steps:
+
       - uses: actions/checkout@v2
+
       - uses: actions/setup-node@v2
         with:
           node-version: 14
       - run: make all
+
       - uses: JS-DevTools/npm-publish@v1
         with:
           access: public
           registry: https://registry.npmjs.org/
           token: ${{ secrets.NPM_TOKEN }}
+
       - uses: JS-DevTools/npm-publish@v1
         with:
           access: public
           registry: https://npm.pkg.github.com/
           token: ${{ secrets.GITHUB_TOKEN }}
-      - uses: nwtgck/actions-netlify@v1.1
-        with:
-          publish-dir: "./_site"
-          production-branch: trunk
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-          deploy-message: ${{ github.event.head_commit.message }}
-          enable-pull-request-comment: false
-          enable-commit-comment: false
-        env:
-          NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
-          NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
-        timeout-minutes: 1
 
+      - uses: peaceiris/actions-gh-pages@v3
+        with:
+          force_orphan: true
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_branch: gh-pages
+          publish_dir: ./_site
 
