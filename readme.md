@@ -1,7 +1,7 @@
 <p align="center">
   <img
     alt="boomshak"
-    src="https://hen.cat/boomshak/boomshak.svg"
+    src="https://henry.catalinismith.com/boomshak/boomshak.svg"
     height="64"
   />
 </p>
@@ -13,7 +13,7 @@
 </p>
 
 <p align="center">
-  <a href="https://hen.cat/boomshak">
+  <a href="https://henry.catalinismith.com/boomshak">
     <strong><code>[homepage]</code></strong>
   </a>
 </p>
