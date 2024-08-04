@@ -7,9 +7,12 @@
     "name": "Henry Catalini Smith",
     "email": "henry@catalinismith.com"
   },
+  "publishConfig": {
+    "access": "public"
+  },
   "repository": {
     "type": "git",
-    "url": "https://github.com/henrycatalinismith/boomshak.git"
+    "url": "git+https://github.com/henrycatalinismith/boomshak.git"
   },
   "dependencies": {},
   "scripts": {
