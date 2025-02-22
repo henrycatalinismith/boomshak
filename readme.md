@@ -1,22 +1,6 @@
-<p align="center">
-  <img
-    alt="boomshak"
-    src="https://henry.catalinismith.com/boomshak/boomshak.svg"
-    height="64"
-  />
-</p>
+# boomshak
 
-<p align="center">
-  <strong>
-    vector font toolkit inspired by PICO-8
-  </strong>
-</p>
-
-<p align="center">
-  <a href="https://henry.catalinismith.com/boomshak">
-    <strong><code>[homepage]</code></strong>
-  </a>
-</p>
+Vector font toolkit inspired by PICO-8
 
 boomshak is a toolkit for rendering text using SVG.
 The font itself is directly inspired by the [PICO-8] fantasy
